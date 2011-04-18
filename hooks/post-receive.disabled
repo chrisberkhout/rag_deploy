@@ -20,3 +20,12 @@ while read oldrev newrev refname
 do
   echo "$oldrev $newrev $refname"
 done
+
+cd ..
+pwd
+unset GIT_DIR
+git clean -x --force --quiet
+git checkout --force $newrev
+git submodule update --init --recursive
+rake rag:deploy
+cd -

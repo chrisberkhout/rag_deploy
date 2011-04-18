@@ -15,6 +15,9 @@ RAG Deploy
     curl -L https://github.com/chrisberkhout/rag_deploy/tarball/master | tar xz --strip-components=1
   - commit
 
+  * set up the repo on the server
+  * set up the git hook on the server
+    rake -f lib/tasks/rag.rake rag:hook:setup
 
 - other stuff:
   rake -f lib/tasks/rag.rake rag
