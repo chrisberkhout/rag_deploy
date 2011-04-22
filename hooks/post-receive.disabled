@@ -1,31 +1,29 @@
-#!/bin/sh
-#
-# An example hook script for the "post-receive" event.
-#
-# The "post-receive" script is run after receive-pack has accepted a pack
-# and the repository has been updated.  It is passed arguments in through
-# stdin in the form
-#  <oldrev> <newrev> <refname>
-# For example:
-#  aa453216d1b3e49e7f6f98441fa56946ddcd6a20 68f7abf4e6f922807889f52bc043ecd31b79f814 refs/heads/master
-#
-# see contrib/hooks/ for a sample, or uncomment the next line and
-# rename the file to "post-receive".
+#!/bin/bash
+################################################################################
+# RAG Deploy's post-receive hook for triggering deployment
+################################################################################
 
-#. /usr/share/doc/git-core/contrib/hooks/post-receive-email
+# Get the details of the first received ref (others are ignored)
+read oldrev newrev refname &&
+echo "======================================================="
+echo "  RAG Deploy"
+echo "======================================================="
+echo ""
+echo "  o Received ${oldrev:0:6}..${newrev:0:6} ($refname)" &&
 
-echo "This is the post-receive!"
+# Change to the working directory and unset GIT_DIR so we can work on it
+cd .. && unset GIT_DIR &&
 
-while read oldrev newrev refname
-do
-  echo "$oldrev $newrev $refname"
-done
+# Make sure the working directory doesn't contain changes
+git clean -x --force --quiet &&
 
-cd ..
-pwd
-unset GIT_DIR
-git clean -x --force --quiet
-git checkout --force $newrev
-git submodule update --init --recursive
-rake rag:deploy
-cd -
+# Check out the new version
+git checkout -q --force $newrev && git submodule update --init --recursive &&
+
+# Clear any files that shouldn't be around anymore
+git clean -x --force --quiet &&
+
+# Deploy it!
+echo "  o Running 'rake rag:deploy'..."
+echo ""
+rake --rakefile lib/tasks/rag.rake --verbose rag:deploy
