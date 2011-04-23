@@ -1,6 +1,6 @@
 require 'rake'
 
-import File.expand_path('../rag.rake', __FILE__) unless Rake::Task.task_defined?(:rag)
+import File.expand_path('../../rag.rake', __FILE__) unless Rake::Task.task_defined?(:rag)
 
 module RAG
   namespace :rag do
