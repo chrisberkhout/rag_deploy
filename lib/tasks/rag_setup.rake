@@ -24,11 +24,13 @@ module RAG
           puts "#{opts[:name].capitalize} is: #{ENV[variable]}"
         end
 
-        confirm_variable 'RAG_ACCOUNT', :name => "the destination account", :default => "user@host.com"
+        confirm_variable 'RAG_ACCOUNT', :name => "the destination account", :default => "scaffapp@ubuntu.local"
         ENV['RAG_USER'], ENV['RAG_HOST'] = ENV['RAG_ACCOUNT'].split('@')
         confirm_variable 'RAG_USER', :name => "the destination user"
         confirm_variable 'RAG_HOST', :name => "the destination host"
-        confirm_variable 'RAG_HOME', :name => "the destination home", :default => "/home/#{ENV['RAG_USER']}/"
+        confirm_variable 'RAG_HOME', :name => "the destination home", :default => "/home/#{ENV['RAG_USER']}"
+        ENV['RAG_REPO'] = "#{ENV['RAG_HOME']}/repo".gsub(/\/+/,'/')
+        confirm_variable 'RAG_REPO', :name => "the destination repository"
       end
     
       desc "#{RAG_NAME}: Set up passwordless authentication on the destination server"
@@ -63,10 +65,21 @@ module RAG
 
       desc "#{RAG_NAME}: Set up an empty git repository on the destination server"
       task :repo => ['setup:variables'] do
-        puts "Task for setup of repo"
-        # rm -Rf ~/repo
-        # git init ~/repo
-        # cd ~/repo && git config receive.denyCurrentBranch ignore && cd -
+        puts "Setting up an empty git repository on the destination server..."
+        if system "ssh #{ENV['RAG_ACCOUNT']} [ -e #{ENV['RAG_REPO']} ]"
+          puts "The directory #{ENV['RAG_ACCOUNT'] + ENV['RAG_REPO']} already exists!"
+          print "IT WILL BE DELETED and freshly initialized IF YOU PRESS ENTER! "
+          $stdin.gets
+          puts "Roger that, proceeding..."
+        end
+        remote_command = 
+          "rm -Rf #{ENV['RAG_REPO']} && 
+           git init -q #{ENV['RAG_REPO']} &&
+           cd #{ENV['RAG_REPO']} &&
+           git config receive.denyCurrentBranch ignore"
+        system "ssh", ENV['RAG_ACCOUNT'], remote_command
+        puts "Initialised the destination server repository. Add it as a remote by running:"
+        puts "\n     git remote add rag ssh://#{ENV['RAG_ACCOUNT'] + ENV['RAG_REPO']}\n\n"
       end
 
       desc "#{RAG_NAME}: Set up the git hook on the destination server"
