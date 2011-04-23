@@ -12,7 +12,7 @@ RAG Deploy
   - set up the account to deploy to
   
   - in your app repo dir:
-    curl -L https://github.com/chrisberkhout/rag_deploy/tarball/master | tar xz --strip-components=1
+    curl -L https://github.com/chrisberkhout/rag_deploy/tarball/master | tar xz --strip-components=1 --exclude README.md
   - commit
 
   * set up the repo on the server
@@ -20,4 +20,4 @@ RAG Deploy
     rake -f lib/tasks/rag.rake rag:hook:setup
 
 - other stuff:
-  rake -f lib/tasks/rag.rake rag
+  rake -f lib/tasks/rag.rake rag:deploy

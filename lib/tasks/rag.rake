@@ -1,19 +1,12 @@
-namespace :rag do
+require 'rake'
 
-  namespace :hook do
-    desc "Install the git hook on a destination system"
-    task :setup do
-      host = "ubuntu.local"
-      user = "scaffapp"
-      hook = "hooks/post-receive.disabled"
-      dest = "/home/scaffapp/repo/.git/hooks/post-receive"
-      system "rsync --chmod=u+rwx,go+rx --perms #{hook} #{user}@#{host}:#{dest}"
-    end
-  end
-  
-  desc "Deploy your app with RAG"
-  task :deploy do
-    # do something
-    puts "Hello RAG!"
-  end
+import File.expand_path('../rag_setup.rake', __FILE__) unless Rake::Task.task_defined?('rag:setup')
+import File.expand_path('../rag_deploy.rake', __FILE__) unless Rake::Task.task_defined?('rag:deploy')
+
+RAG_NAME = "RAG Deploy"
+RAG_URL  = "http://github.com/chrisberkhout/rag_deploy"
+
+desc "RAG Deploy"
+task :rag do
+  puts "#{RAG_NAME}: Please visit #{RAG_URL} for more information."
 end
