@@ -3,12 +3,11 @@ require 'rake'
 import File.expand_path('../rag.rake', __FILE__) unless Rake::Task.task_defined?(:rag)
 
 module RAG
-
   namespace :rag do
 
     desc "#{RAG_NAME}: Set up the destination server"
     task :setup => ['setup:ssh', 'setup:repo', 'setup:hook'] do
-      puts "#{RAG_NAME}: Top level setup task for..."
+      puts "#{RAG_NAME} destination server setup is complete! :D"
     end
 
     namespace :setup do
@@ -24,7 +23,7 @@ module RAG
           puts "#{opts[:name].capitalize} is: #{ENV[variable]}"
         end
 
-        confirm_variable 'RAG_ACCOUNT', :name => "the destination account", :default => "scaffapp@ubuntu.local"
+        confirm_variable 'RAG_ACCOUNT', :name => "the destination account", :default => "user@hostname.com"
         ENV['RAG_USER'], ENV['RAG_HOST'] = ENV['RAG_ACCOUNT'].split('@')
         confirm_variable 'RAG_USER', :name => "the destination user"
         confirm_variable 'RAG_HOST', :name => "the destination host"
@@ -84,11 +83,9 @@ module RAG
 
       desc "#{RAG_NAME}: Set up the git hook on the destination server"
       task :hook => ['setup:variables', :repo] do
-        host = "ubuntu.local"
-        user = "scaffapp"
-        hook = "hooks/post-receive.disabled"
-        dest = "/home/scaffapp/repo/.git/hooks/post-receive"
-        system "rsync --chmod=u+rwx,go+rx --perms #{hook} #{user}@#{host}:#{dest}"
+        print "Setting up #{RAG_NAME}'s post-receive git hook (any existing post-receive will be overwritten)... "
+        system "rsync --chmod=u+rwx,go+rx --perms #{RAG_HOOK} #{ENV['RAG_ACCOUNT']}:#{ENV['RAG_REPO']}/.git/hooks/post-receive"
+        puts "done!"
       end
 
     end # namespace :setup
