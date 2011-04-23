@@ -4,12 +4,12 @@
 ################################################################################
 
 # Get the details of the first received ref (others are ignored)
-read oldrev newrev refname &&
-echo "======================================================="
-echo "  RAG Deploy"
-echo "======================================================="
-echo ""
-echo "  o Received ${oldrev:0:6}..${newrev:0:6} ($refname)" &&
+read oldrev newrev refname                                     &&
+echo "=======================================================" &&
+echo "  RAG Deploy"                                            &&
+echo "=======================================================" &&
+echo ""                                                        &&
+echo "  o Received ${oldrev:0:6}..${newrev:0:6} ($refname)"    &&
 
 # Change to the working directory and unset GIT_DIR so we can work on it
 cd .. && unset GIT_DIR &&
@@ -24,6 +24,6 @@ git checkout -q --force $newrev && git submodule update --init --recursive &&
 git clean -x --force --quiet &&
 
 # Deploy it!
-echo "  o Running 'rake rag:deploy'..."
-echo ""
+echo "  o Running 'rake rag:deploy'..." &&
+echo "" &&
 rake --rakefile lib/tasks/rag.rake --verbose rag:deploy
