@@ -83,7 +83,7 @@ unless Rake::Task.task_defined?('rag:setup')
         end
 
         desc "#{RAG_NAME}: Set up the git hook on the destination server"
-        task :hook => ['setup:variables', :repo] do
+        task :hook => ['setup:variables'] do
           print "Setting up #{RAG_NAME}'s post-receive git hook (any existing post-receive will be overwritten)... "
           system "rsync --chmod=u+rwx,go+rx --perms #{RAG_HOOK} #{ENV['RAG_ACCOUNT']}:#{ENV['RAG_REPO']}/.git/hooks/post-receive"
           puts "done!"
