@@ -4,27 +4,30 @@ import File.expand_path('../rag.rake', __FILE__) unless Rake::Task.task_defined?
 
 module RAG
 
-  class Dest
-    class <<self
-      attr :account, true
-      attr :username, true
-      attr :hostname, true
+  def self.confirm_variable(variable, opts)
+    if ENV[variable].nil?
+      print "Please enter #{opts[:name]}#{opts[:default] && " [#{opts[:default]}]"}: "
+      input = $stdin.gets.chomp
+      ENV[variable] = input=="" ? opts[:default] : input
     end
+    puts "#{opts[:name].capitalize} is: #{ENV[variable]}"
   end
 
   namespace :rag do
 
     desc "Top level setup task"
     task :setup do
-      Dest.account = "scaffapp@ubuntu.local"
-      puts "#{RAG_NAME}: Top level setup task for #{Dest.account}"
+      puts "#{RAG_NAME}: Top level setup task for}"
     end
 
     namespace :setup do
 
       task :details do
-        RAG::account = "scaffapp@ubuntu.local"
-        RAG::username, RAG::hostname = RAG::account.split('@')[0..1]
+        confirm_variable 'RAG_ACCOUNT', :name => "the destination account", :default => "user@host.com"
+        ENV['RAG_USER'], ENV['RAG_HOST'] = ENV['RAG_ACCOUNT'].split('@')
+        confirm_variable 'RAG_USER', :name => "the destination user"
+        confirm_variable 'RAG_HOST', :name => "the destination host"
+        confirm_variable 'RAG_HOME', :name => "the destination home directory", :default => "/home/#{ENV['RAG_USER']}/"
       end
     
       desc "Destination setup: empty git repository"
