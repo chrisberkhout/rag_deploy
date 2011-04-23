@@ -7,7 +7,7 @@ module RAG
   
   RAG_NAME = "RAG Deploy"
   RAG_URL  = "http://github.com/chrisberkhout/rag_deploy"
-  RAG_HOOK = "hooks/post-receive.disabled"
+  RAG_HOOK = "lib/tasks/rag/rag_post-receive.disabled"
 
   desc "#{RAG_NAME}: About #{RAG_NAME}"
   task :rag do
