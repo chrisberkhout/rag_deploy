@@ -15,15 +15,15 @@ echo "  o Received ${oldrev:0:6}..${newrev:0:6} ($refname)"    &&
 cd .. && unset GIT_DIR &&
 
 # Make sure the working directory doesn't contain changes
-git clean -x --force --quiet &&
+git clean -x -d --force --quiet &&
 
 # Check out the new version
 git checkout -q --force $newrev && git submodule update --init --recursive &&
 
 # Clear any files that shouldn't be around anymore
-git clean -x --force --quiet &&
+git clean -x -d --force --quiet &&
 
 # Deploy it!
 echo "  o Running 'rake rag:deploy'..." &&
 echo "" &&
-rake --rakefile lib/tasks/rag.rake --verbose rag:deploy
+rake --rakefile lib/tasks/rag.rake --verbose --trace rag:deploy

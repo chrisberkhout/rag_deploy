@@ -2,6 +2,7 @@ require 'rake'
 
 import File.expand_path('../rag/rag_setup.rake', __FILE__) unless Rake::Task.task_defined?('rag:setup')
 import File.expand_path('../rag/rag_deploy.rake', __FILE__) unless Rake::Task.task_defined?('rag:deploy')
+import File.expand_path('../rag/rag_history.rake', __FILE__) unless Rake::Task.task_defined?('rag:history')
 
 module RAG
   
