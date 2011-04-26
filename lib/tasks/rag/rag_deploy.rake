@@ -67,7 +67,7 @@ unless Rake::Task.task_defined?('rag:deploy')
           ENV['RACK_ENV'] = "production"
           new_migration = Dir.glob('db/migrate/*.rb').map{ |f| f[/\/(\d+)\w+\.rb/, 1] }.compact.sort.last
           if !new_migration.nil?
-            current_migration = `rake db:version`[/Current version: (\d+)/, 1]
+            current_migration = `rake db:version`[/Current version: (\d+)/, 1] || 0
             if current_migration.to_i == 0
               `rake db:create db:schema:load db:seed`
             elsif new_migration != current_migration
