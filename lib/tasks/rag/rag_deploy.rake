@@ -52,7 +52,7 @@ unless Rake::Task.task_defined?('rag:deploy')
               run_cmd "mkdir -pv ../../shared/bundle"
               run_cmd "ln -sfv   ../../shared/bundle bundle"
             end
-            run_cmd "bundle install --deployment --verbose"
+            run_cmd "bundle install --deployment"
           end
         end
 
@@ -90,7 +90,7 @@ unless Rake::Task.task_defined?('rag:deploy')
         task :release_and_restart do
           rag_tag = `git tag | grep deploy-.* | sort | tail -1`.chomp
           run_cmd "mkdir -p tmp; touch tmp/restart.txt"
-          run_cmd "rsync -C -r --links -v --progress . ../#{rag_tag}/"
+          run_cmd "rsync -C -r --links . ../#{rag_tag}/"
           run_cmd "cd ..; rm current; ln -s #{rag_tag} current"
           # start/restart workers here
         end
