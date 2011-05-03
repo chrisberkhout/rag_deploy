@@ -8,8 +8,8 @@ unless Rake::Task.task_defined?('rag:deploy')
     namespace :rag do
       
       def self.run_cmd(cmd)
-        puts "-----> #{Dir.pwd}$ #{cmd}"
-        IO.popen(cmd) { |f| puts "       #{f.gets}" }
+        puts "#{Dir.pwd}$ #{cmd}"
+        system cmd
       end
 
       desc "#{RAG_NAME}: Deploy on this system"
@@ -38,10 +38,10 @@ unless Rake::Task.task_defined?('rag:deploy')
           run_cmd "mkdir -pv public"
           Dir.chdir(File.expand_path('public')) do
             run_cmd "mkdir -pv ../../shared/assets"
-            run_cmd "ln -sfv ../../shared/assets assets"
+            run_cmd "ln -sfv   ../../shared/assets assets"
           end
           run_cmd "mkdir -pv ../shared/log"
-          run_cmd "ln -sfv ../shared/log log"
+          run_cmd "ln -sfv   ../shared/log log"
         end
         
         desc "#{RAG_NAME}: Run gem bundler if there is a Gemfile"
@@ -50,7 +50,7 @@ unless Rake::Task.task_defined?('rag:deploy')
             run_cmd "mkdir -pv vendor"
             Dir.chdir(File.expand_path('vendor')) do
               run_cmd "mkdir -pv ../../shared/bundle"
-              run_cmd "ln -sfv ../../shared/bundle bundle"
+              run_cmd "ln -sfv   ../../shared/bundle bundle"
             end
             run_cmd "bundle install --deployment --verbose"
           end
