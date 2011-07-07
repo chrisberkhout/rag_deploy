@@ -72,15 +72,15 @@ unless Rake::Task.task_defined?('rag:deploy')
           ENV['RACK_ENV'] = "production"
           new_migration = Dir.glob('db/migrate/*.rb').map{ |f| f[/\/(\d+)\w+\.rb/, 1] }.compact.sort.last
           if !new_migration.nil?
-            current_migration = `rake db:version`[/Current version: (\d+)/, 1] || 0
+            current_migration = `bundle exec rake db:version`[/Current version: (\d+)/, 1] || 0
             if current_migration.to_i == 0
-              run_cmd "rake db:create db:schema:load db:seed"
+              run_cmd "bundle exec rake db:create db:schema:load db:seed"
             elsif new_migration != current_migration
               Rake::Task['rag:deploy:app_suspend'].invoke
               if new_migration > current_migration
-                run_cmd "rake db:migrate VERSION=#{new_migration}"
+                run_cmd "bundle exec rake db:migrate VERSION=#{new_migration}"
               elsif new_migration < current_migration
-                Dir.chdir('../current') { run_cmd "rake db:migrate VERSION=#{new_migration}" }
+                Dir.chdir('../current') { run_cmd "bundle exec rake db:migrate VERSION=#{new_migration}" }
               end
             end
           end
