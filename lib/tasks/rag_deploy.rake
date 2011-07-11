@@ -94,7 +94,7 @@ module RAG
         rag_tag = `git tag | grep deploy-.* | sort | tail -1`.chomp
         run_cmd "mkdir -p tmp; touch tmp/restart.txt"
         run_cmd "rsync -C -r --links . ../#{rag_tag}/"
-        run_cmd "cd ..; rm current; ln -s #{rag_tag} current"
+        run_cmd "cd ..; rm -f current; ln -s #{rag_tag} current"
         # start/restart workers here
       end
       
