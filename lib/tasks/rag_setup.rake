@@ -88,8 +88,37 @@ module RAG
 
       desc "#{RAG_NAME}: Set up the git hook on the destination server"
       task :hook => ['setup:variables'] do
-        print "Setting up #{RAG_NAME}'s post-receive git hook (any existing post-receive will be overwritten)... "
-        system "rsync --chmod=u+rwx,go+rx --perms #{RAG_HOOK} #{ENV['RAG_ACCOUNT']}:#{ENV['RAG_REPO']}/.git/hooks/post-receive"
+        hook = <<-END.gsub(/^ */, '')
+          #!/bin/bash 
+          ########### rag_deploy post-receive hook ###########
+          
+          # Get the details of the first received ref (others are ignored)
+          read oldrev newrev refname &&
+          echo "rag_deploy: received ${oldrev:0:6}..${newrev:0:6} ($refname)" &&
+          
+          # Change to the working directory and unset GIT_DIR so we can work on it
+          cd .. && unset GIT_DIR &&
+          
+          # Make sure the working directory does not contain changes
+          git clean -x -d --force --quiet &&
+          
+          # Check out the new version
+          git checkout -q --force $newrev && git submodule update --init --recursive &&
+          
+          # Clear any files that should not be around anymore
+          git clean -x -d --force --quiet &&
+          
+          # Deploy it!
+          echo "rag_deploy: running rake rag:deploy..." &&
+          echo "" &&
+          rake -f lib/tasks/rag_deploy.rake rag:deploy
+        END
+        remote_command = <<-END.gsub(/^ */, '')
+          echo '#{hook}' > #{ENV['RAG_REPO']}/.git/hooks/post-receive &&
+          chmod 755 #{ENV['RAG_REPO']}/.git/hooks/post-receive
+        END
+        print "Setting up post-receive git hook (any existing post-receive will be overwritten)... "
+        system "ssh", ENV['RAG_ACCOUNT'], remote_command
         puts "done!"
       end
 
