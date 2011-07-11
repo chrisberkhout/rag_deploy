@@ -53,6 +53,11 @@ No built in support for different config for each deployment target.
         git commit --allow-empty -m "No change this time, just want a new commit for deployment."
         git push rag master
 
+## Other git hook setups
+
+* [Deploying Websites With a Tiny Git Hook](http://ryanflorence.com/deploying-websites-with-a-tiny-git-hook/)
+* [GitHub-esque deployment using Capistrano and Git](https://github.com/rubypond/git-based-deploy)
+
 ## Feedback
 
 Any feedback is welcome! The best way to reach me is via email at gmail.com (chrisberkhout@).
