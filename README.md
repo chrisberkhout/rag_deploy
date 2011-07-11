@@ -7,7 +7,7 @@ _Really_ simple deployment with rake and git.
 You want to deploy, so...
 
 1. You push to the target server. 
-2. It receives the push and runs the `rake rag:deploy` task, which handles tagging, symlinks, gems, migration/rollback with a maintenance page, and restart.
+2. It receives the push and runs the `rake rag:deploy` task, which handles tagging, release directories, symlinks, gems, migration or rollback with a maintenance page, and restart.
 
 That's it! It's small and simple. It does application deployment and no other system administration. It's clear exactly what is happening and where, and it's easy to modify or extend its behavior. You can trigger it manually (on the server) or automatically (via its git hook).
 
