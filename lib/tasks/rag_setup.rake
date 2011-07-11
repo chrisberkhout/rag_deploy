@@ -6,7 +6,7 @@ module RAG
   include Rake::DSL
 
   RAG_NAME = "RAG Deploy"
-  RAG_HOOK = "lib/tasks/rag/rag_post-receive.disabled"
+  RAG_HOOK = "lib/tasks/rag_post-receive.disabled"
 
   namespace :rag do
 

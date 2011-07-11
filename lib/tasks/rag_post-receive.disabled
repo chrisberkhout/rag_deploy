@@ -26,4 +26,4 @@ git clean -x -d --force --quiet &&
 # Deploy it!
 echo "  o Running 'rake rag:deploy'..." &&
 echo "" &&
-rake --rakefile lib/tasks/rag.rake rag:deploy
+rake --rakefile lib/tasks/rag_deploy.rake rag:deploy
