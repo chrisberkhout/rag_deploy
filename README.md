@@ -4,7 +4,9 @@ _Really_ simple deployment with rake and git.
 
 ## Introduction
 
-1. You want to deploy, so you push to the target server. 
+You want to deploy, so...
+
+1. You push to the target server. 
 2. It receives the push and runs the `rake rag:deploy` task, which handles tagging, symlinks, gems, migration/rollback with a maintenance page, and restart.
 
 That's it! It's small and simple. It does application deployment and no other system administration. It's clear exactly what is happening and where, and it's easy to modify or extend its behavior. You can trigger it manually (on the server) or automatically (via its git hook).
@@ -21,7 +23,7 @@ I've used this a bit, but the code is not pretty. I'm keeping it for reference r
 
 First, set up your server, including git and rake, and an account and vhost config for the application. You might like to use [Babushka](http://babushka.me/) or [Chef](http://wiki.opscode.com/display/chef/).
 
-On your development machine, in the source directory of your app, run:
+Then, on your development machine, in the source directory of your app, run:
 
     curl -L https://github.com/chrisberkhout/rag_deploy/tarball/master | \
     tar xzv --strip-components=1 --exclude README.md
@@ -34,7 +36,7 @@ As instructed by `rag:setup`, add a git remote for the target server, for exampl
 
     git add remote rag ssh://yourapp@yourserver.com/home/yourapp/repo
 
-Commit. Review the RAG files, particularly for the `rag:deploy` task, and make any changes specific to your application or preferences. Commit again.
+Commit. Review the RAG files, particularly `rag_deploy.rake`, and make any changes specific to your application or preferences. Commit again.
 
 Deploy by pushing a new commit to the target server. It can be an empty commit if you want to redeploy without changes. For example:
 
