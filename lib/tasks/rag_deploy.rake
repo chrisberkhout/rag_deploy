@@ -40,9 +40,11 @@ module RAG
       task :shared_dirs do
         run_cmd "mkdir -pv public"
         Dir.chdir(File.expand_path('public')) do
+          run_cmd "rm -Rf system"
           run_cmd "mkdir -pv ../../shared/system"
           run_cmd "ln -sfv   ../../shared/system system"
         end
+        run_cmd "rm -Rf log"
         run_cmd "mkdir -pv ../shared/log"
         run_cmd "ln -sfv   ../shared/log log"
       end
