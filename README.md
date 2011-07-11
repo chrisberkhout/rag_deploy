@@ -45,7 +45,7 @@ Deploy by pushing a new commit to the target server. It can be an empty commit i
 
 ## Assumptions
 
-RAG Deploy assumes you are using git for version control and bundler for managing any gems. It also assumes that you are deploying to a small number of unix-based systems that have `rsync` install (e.g. Mac, Ubuntu), and a separate account for each of your applications. Your [vhost config](https://github.com/chrisberkhout/babushka-deps/blob/master/user/site.rb) should redirect all requests to a static `public/maintenance.html` page if one exists.
+RAG Deploy assumes you are using git for version control and bundler for managing any gems. It also assumes that you are deploying to a small number of unix-based systems that have `rsync` installed (e.g. Mac, Ubuntu), and a separate account for each of your applications. Your [vhost config](https://github.com/chrisberkhout/babushka-deps/blob/master/user/site.rb) should redirect all requests to a static `public/maintenance.html` page if one exists.
 
 The automatic database migration and rollback assumes your app is on Rails, using ActiveRecord.
 
