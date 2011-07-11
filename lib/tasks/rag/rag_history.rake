@@ -4,6 +4,7 @@ import File.expand_path('../../rag.rake', __FILE__) unless Rake::Task.task_defin
 
 unless Rake::Task.task_defined?('rag:history')
   module RAG
+    include Rake::DSL
     namespace :rag do
 
       desc "#{RAG_NAME}: Show deployment history for a given git remote"

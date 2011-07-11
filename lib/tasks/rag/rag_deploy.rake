@@ -5,6 +5,7 @@ require 'fileutils'
 
 unless Rake::Task.task_defined?('rag:deploy')
   module RAG
+    include Rake::DSL
     namespace :rag do
       
       def self.run_cmd(cmd)
