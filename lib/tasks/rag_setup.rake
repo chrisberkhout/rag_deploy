@@ -3,7 +3,7 @@
 require 'rake'
 
 module RAG
-  include Rake::DSL if defined? Rake::DSL
+  extend Rake::DSL if defined? Rake::DSL
 
   RAG_NAME = "RAG Deploy"
   RAG_HOOK = "lib/tasks/rag_post-receive.disabled"
