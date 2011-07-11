@@ -4,7 +4,7 @@ require 'rake'
 require 'fileutils'
 
 module RAG
-  include Rake::DSL
+  include Rake::DSL if defined? Rake::DSL
 
   RAG_NAME = "RAG Deploy"
   
