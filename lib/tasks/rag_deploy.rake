@@ -95,7 +95,7 @@ module RAG
       task :release_and_restart do
         rag_tag = `git tag | grep deploy-.* | sort | tail -1`.chomp
         run_cmd "mkdir -p tmp; touch tmp/restart.txt"
-        run_cmd "rsync -C -r --links . ../#{rag_tag}/"
+        run_cmd "rsync --exclude='.git' -r --links . ../#{rag_tag}/"
         run_cmd "cd ..; rm -f current; ln -s #{rag_tag} current"
         # start/restart workers here
       end
