@@ -7,7 +7,7 @@ _Really_ simple deployment with rake and git.
 You want to deploy, so...
 
 1. You push to the target server. 
-2. It receives the push and runs the `rake rag:deploy` task, which handles tagging, release directories, symlinks, gems, databae migration/rollback with a maintenance page, and restart.
+2. It receives the push and runs the `rake rag:deploy` task, which handles tagging, release directories, symlinks, gems, database migration/rollback with a maintenance page, and restart.
 
 That's it! It's small and simple. It does application deployment and no other system administration. It's clear exactly what is happening and where, and it's easy to modify or extend its behavior. You can trigger it manually (on the server) or automatically (via its git hook).
 
@@ -15,11 +15,11 @@ That's it! It's small and simple. It does application deployment and no other sy
 
 Unmaintined.
 
-The idea of git triggering a server-side job to deploy is good. Here I've done it with rake, but using [Babushka](http://babushka.me/) in its place would allow for better separation of generic tasks from application specific tasks.
+The idea of git triggering a server-side job to deploy is good. Here I've done it with rake. Using [Babushka](http://babushka.me/) in its place may allow for better separation of generic tasks from application specific tasks.
 
 I've used this a bit, but the code is not pretty. I'm keeping it for reference rather than use.
 
-## Install and use
+## Installation and use
 
 First, set up your server, including git and rake, and an account and vhost config for the application. You might like to use [Babushka](http://babushka.me/) or [Chef](http://wiki.opscode.com/display/chef/).
 
